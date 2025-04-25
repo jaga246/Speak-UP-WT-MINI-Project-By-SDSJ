@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>How to Use - SpeakUp Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      text-align: center;
+      padding: 20px;
+    }
+    .image-container {
+      display: none;
+      animation: fadeIn 0.8s ease-in-out forwards;
+    }
+    .active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .description {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>How to Use SpeakUp Portal</h1>
+
+  <div class="image-container active">
+    <img src="howtouse.jpeg" alt="How to Use" />
+    <div class="description">Click on it to know how to use.</div>
+  </div>
+  <div class="image-container">
+    <img src="profile.jpeg" alt="Profile Set Up" />
+    <div class="description">Set up your user profile with accurate contact and district info.</div>
+  </div>
+  <div class="image-container">
+    <img src="loginorsign.jpeg" alt="Login" />
+    <div class="description">Log in securely to access the portal and submit your issues.</div>
+  </div>
+  <div class="image-container">
+    <img src="register.jpeg" alt="Register Complaint" />
+    <div class="description">Register complaints with detailed descriptions and department selection.</div>
+  </div>
+  <div class="image-container">
+    <img src="profile.jpeg" alt="View Status" />
+    <div class="description">Track the status of your submitted complaints in real-time.</div>
+  </div>
+
+  <div>
+    <button onclick="showPrevious()">Previous</button>
+    <button onclick="showNext()">Next</button>
+  </div>
+
+  <script>
+    const containers = document.querySelectorAll('.image-container');
+    let currentIndex = 0;
+
+    function showNext() {
+      containers[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % containers.length;
+      containers[currentIndex].classList.add('active');
+    }
+
+    function showPrevious() {
+      containers[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex - 1 + containers.length) % containers.length;
+      containers[currentIndex].classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
