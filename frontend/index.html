@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>speakUp Online Complaint System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Header -->
+  <div class="top-header">
+    <div class="d-flex align-items-center">
+      <img src="logo.jpeg" alt="Gov Logo">
+      <div class="ml-3">
+        <h3><b>SpeakUp Portal</b></h3>
+        <p style="margin: 0; font-size: 14px;"><b>Gov of India</b></p>
+      </div>
+    </div>
+    <div class="minister-imgs d-flex align-items-center">
+      <img src="govtlogo.jpeg" alt="Minister 1">
+      <img src="Govt.jpeg" alt="Minister 2">
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand font-weight-bold" href="#">SpeakUp Portal</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#FAQSection">FAQs</a></li>
+          <li class="nav-item"><a class="nav-link" href="howtouse.html">How to Use</a></li>
+          <li class="nav-item"><a class="nav-link" href="#personaldetails">Profile Set Up</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" >Login</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item text-dark" href="#"color-dark onclick = "loginToSpeakUp()">Login</a>
+              <a class="dropdown-item text-dark" href="#" onclick="signupToSpeakup()">SignUp</a>
+            </div>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#feedback">Feedback</a></li>
+          <li class="nav-item"><a class="nav-link" href="#About">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Section -->
+  <section class="main-section">
+    <div class="main-left">
+      <h2>SpeakUp Portal Complaint Management System</h2>
+      <h4>IF YOU ARE FACING ISSUES AT WORKPLACE</h4>
+      <div class="main-buttons">
+        <a href="#" class="btn btn-register" onclick="registerComplaint()" >Register Your Complaint</a>
+        <a href="#" class="btn btn-status" onclick = "statusComplaint()">View Status of Complaint</a>
+      </div>
+    </div>
+    <div class="main-image">
+      <img src="hero.jpeg" alt="Illustration">
+    </div>
+  </section>
+  <!-- Main Content -->
+  <div id="home">
+  <div class="container middle-part">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-4" onclick="registerComplaint()">
+            <div class="card" >
+                <img src="muncipal.jpeg" class="image" alt="Municipal">
+                <h1 style="font-size:larger;"><b>Public Safety</b></h1>
+                <p>Ensuring community well-being.</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-4" onclick="registerComplaint()">
+            <div class="card">
+                <img src="publicsafety.jpeg" class="image" alt="Public Safety">
+                <h1 style="font-size:larger;"><b>Municipal Services</b></h1>
+                <p>Providing essential city services.</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-4" onclick="registerComplaint()">
+            <div class="card">
+                <img src="education.jpeg" class="image" alt="Education">
+                <h1 style="font-size:larger;"><b>Education</b></h1>
+                <p>Improving knowledge for all.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-4" onclick="registerComplaint()">
+            <div class="card">
+                <img src="health.jpeg" class="image" alt="Health Care">
+                <h1 style="font-size:larger;"><b> Health Care</b></h1>
+                <p>Enhancing urban living.</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-4" onclick="registerComplaint()">
+            <div class="card">
+                <img src="environment.jpeg" class="image" alt="Environment">
+                <h1 style="font-size:larger;"><b>Environment</b></h1>
+                <p>Protecting our planet.</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-4" onclick="registerComplaint()">
+            <div class="card">
+                <img src="Transportation.jpeg" class="image" alt="Transportation">
+                <h1 style="font-size:larger;"><b>Transportation</b></h1>
+                <p>Efficient and sustainable travel.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+<!--FAQS-->
+<div class="container" id = "FAQSection">
+    <h2 class="faq-header"><b>SpeakUp Portal – Frequently Asked Questions</b></h2>
+    
+    <div class="accordion" id="faqAccordion">
+      <!-- FAQ Template Items -->
+    </div>
+  </div>
+
+<!--Personal Details-->
+<div id="personaldetails">
+
+  <div class="form-wrapper">
+    <h2>User Detail Form</h2>
+    <form action="/submit-profile" method="POST">
+      
+      <div class="form-group">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required />
+      </div>
+
+      <div class="form-group">
+        <label for="area">Area / Locality:</label>
+        <input type="text" id="area" name="area" required />
+      </div>
+
+      <div class="form-group">
+        <label for="mandal">Mandal:</label>
+        <input type="text" id="mandal" name="mandal" required />
+      </div>
+
+      <div class="form-group">
+        <label>Gender:</label>
+        <div class="gender-options">
+          <label><input type="radio" name="gender" value="Male" required /> Male</label>
+          <label><input type="radio" name="gender" value="Female" required /> Female</label>
+          <label><input type="radio" name="gender" value="Other" required /> Other</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="education">Education Level:</label>
+        <input type="text" id="education" name="education" />
+      </div>
+
+      
+
+      <div class="form-group">
+        <label for="state">State:</label>
+        <select id="state" name="state" required>
+          <option value="">-- Select State --</option>
+          <option>Andhra Pradesh</option>
+          <option>Telangana</option>
+          <option>Karnataka</option>
+          <option>Tamil Nadu</option>
+          <option>Kerala</option>
+          <option>Maharashtra</option>
+          <option>Others</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="district">District:</label>
+        <input type="text" id="district" name="district" required />
+      </div>
+
+      <div class="form-group">
+        <label for="bio">Short Bio (Optional):</label>
+        <textarea id="bio" name="bio" rows="3" placeholder="Tell us a bit about yourself..."></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">Save Profile</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>  
+  <!--Feedback-->
+<div class="container feedback-container" id = "feedback">
+    <form id="feedback-form">
+      <h2 class = "feedback-heading">Feedback</h2>
+
+      <label for="firstName">Your Name</label>
+      <div class="name-fields">
+        <input type="text" id="firstName" placeholder="First" />
+        <input type="text" id="lastName" placeholder="Last" />
+      </div>
+
+      <label for="email">Your Email</label>
+      <input type="email" id="email" placeholder="example@mail.com" />
+
+      <label>How happy are you with our service?</label>
+      <div class="stars">
+        <span class="star" data-value="1">&#9734;</span>
+        <span class="star" data-value="2">&#9734;</span>
+        <span class="star" data-value="3">&#9734;</span>
+        <span class="star" data-value="4">&#9734;</span>
+        <span class="star" data-value="5">&#9734;</span>
+      </div>
+
+      <label for="feedback">Tell us more about your experience with us</label>
+      <textarea id="feedback" rows="4" placeholder="Your feedback here..."></textarea>
+
+      <div class="checkbox">
+        <input type="checkbox" id="testimonial" />
+        <label for="testimonial">Use my feedback as testimonial</label>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+</div>
+</div>
+</div>
+  <!-- Footer -->
+ <div>
+      <footer class="footer">
+        <div class="footer-container">
+          <h4>Contact Government Department</h4>
+          <p>SpeakUp Support Cell</p>
+          <p>Email: support@speakup.gov.in</p>
+          <p>Phone: 1800-123-4567</p>
+          <p>Address: Department of Public Grievances, Block A, New Delhi - 110001</p>
+        </div>
+        <p>© 2025 Government Services</p>
+      </footer>
+ </div>
+
+
+ 
+
+
+
+  <!-- JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let reportCards = document.getElementsByClassName("Report");
+    function registerComplaint(){
+       window.location.href = "report.html";
+    }
+    function statusComplaint(){
+        window.location.href = "personal.html";
+    }
+    
+    const faqsEl = document.querySelectorAll('.faq');
+
+    faqsEl.forEach(faq => {
+    faqsEl.querySelector('.faq-question').addEventListener('click', () => {
+        faq.classList.toggle('open');
+    });
+    });
+    const stars = document.querySelectorAll('.star');
+let selectedRating = 0;
+
+stars.forEach(star => {
+star.addEventListener('click', () => {
+selectedRating = star.getAttribute('data-value');
+updateStars(selectedRating);
+});
+});
+
+function updateStars(rating) {
+    stars.forEach(star => {
+if (parseInt(star.getAttribute('data-value')) <= rating) {
+  star.classList.add('selected');
+} else {
+  star.classList.remove('selected');
+}
+});
+}
+
+document.getElementById('feedback-form').addEventListener('submit', function (e) {
+e.preventDefault();
+alert("Feedback submitted successfully!\nRating: " + selectedRating + " star(s)");
+});
+//JavaScript to load FAQs 
+    const faqs = [
+      {
+        question: "1. What is the SpeakUp Portal?",
+        answer: "The SpeakUp Portal is an online platform designed to allow individuals to securely and anonymously report complaints, misconduct, or concerns related to an organization, workplace, or service."
+      },
+      {
+        question: "2. Who can file a complaint on the portal?",
+        answer: "Anyone who has experienced or witnessed an issue that needs to be reported — including employees, students, customers, or members of the public — can use the SpeakUp Portal."
+      },
+      {
+        question: "3. Is my identity kept confidential?",
+        answer: "Yes. You can choose to file a complaint anonymously. If you share your contact information, it will be kept strictly confidential and used only for follow-up purposes."
+      },
+      {
+        question: "4. What types of complaints can be submitted?",
+        answer: "You can report a wide range of issues including education, healthcare, municipal service,public safety  and customer service concerns."
+      },
+      {
+        question: "5. How do I submit a complaint?",
+        answer: "Go to the 'File a Complaint' section, fill out the form with required details, and submit it. You will receive a tracking ID (if not anonymous) for future reference."
+      },
+      {
+        question: "6. What happens after I file a complaint?",
+        answer: "Your complaint is reviewed by the appropriate authority. An investigation may be initiated and appropriate action will be taken based on findings."
+      },
+      {
+        question: "7. Can I track the status of my complaint?",
+        answer: "Yes, if you provided your contact information or received a tracking number, you can check the status in the 'Track Complaint' section."
+      },
+      
+    ];
+
+    const accordion = document.getElementById("faqAccordion");
+
+    faqs.forEach((faq, index) => {
+      const item = document.createElement("div");
+      item.className = "accordion-item";
+      item.innerHTML = `
+        <h2 class="accordion-header" id="heading${index}">
+          <button class="accordion-button ${index !== 0 ? 'collapsed' : ''}" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapse${index}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="collapse${index}">
+            ${faq.question}
+          </button>
+        </h2>
+        <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}"
+          aria-labelledby="heading${index}" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            ${faq.answer}
+          </div>
+        </div>
+      `;
+      accordion.appendChild(item);
+    });
+  
+    function loginToSpeakUp(){
+        window.location.href = "login.html";
+    }
+    function signupToSpeakup(){
+        window.location.href = "signup.html";
+    }
+  </script>
+  <!-- Bootstrap JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
