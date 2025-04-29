@@ -310,11 +310,81 @@ button:hover {
     margin: auto;
   }
 
-#home,#FAQSection,#feedback,#personaldetails
+
+  /* All styles scoped to #about-page */
+#about-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ffe6f0;
+  color: #333;
+  line-height: 1.6;
+}
+
+#about-page .about-header {
+  background-color: #ff99cc;
+  color: white;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+#about-page .about-header h1 {
+  margin-bottom: 10px;
+  font-size: 2.5em;
+}
+
+#about-page .about-header p {
+  font-size: 1.2em;
+}
+
+#about-page .about-section {
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 30px auto 0 auto;
+  background-color: #fff0f5;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+#about-page h2 {
+  color: #cc0066;
+  margin-bottom: 15px;
+}
+
+#about-page ul {
+  padding-left: 20px;
+}
+
+#about-page ul li {
+  margin-bottom: 10px;
+}
+
+#about-page .team ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#about-page .team ul li {
+  background-color: #ffe0ec;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-left: 4px solid #cc0066;
+  border-radius: 6px;
+}
+
+#about-page .tech-stack ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+#about-page .tech-stack ul li {
+  margin-bottom: 8px;
+}
+
+   
+#home,#FAQSection,#feedback,#personaldetails,#about
 {
   display:none;
 }
-#home:target,#FAQSection:target,#feedback:target,#personaldetails:target
+#home:target,#FAQSection:target,#feedback:target,#personaldetails:target,#about:target
 {
   display:block;
 }
