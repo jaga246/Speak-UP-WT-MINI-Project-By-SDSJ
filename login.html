@@ -211,7 +211,7 @@
       	if (redirectParam === "fromProfile") {
   	window.location.href = "index.html?from=profile";
 	} else {	
-  	window.location.href = "index.html";
+  	window.history.back();
 	}
     } else {
       toast.textContent = error || "Google Sign-in failed!";
@@ -330,7 +330,7 @@
       if (redirectParam1 === "fromProfile") {
   	window.location.href = "index.html?from=profile";
 	} else {
-  	window.location.href = "index.html";
+  	window.history.back();
 	}
     } else {
       toast.textContent ="Log-in failed!";
