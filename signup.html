@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign Up</title>
-  <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -132,37 +131,59 @@ body {
   margin-top: 1rem;
   border-radius: 10px;
 }
+.google-btn {
+      width: 100%;
+      padding: 14px;
+      background-color: green;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 12px;
+    }
+
+.google-btn:hover {
+      background-color: darkgreen;
+}
+.toast {
+      visibility: hidden;
+      min-width: 260px;
+      background-color: #4caf50;
+      color: white;
+      text-align: center;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+    }
+
+    .toast.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 3.5s;
+    }
+
+    @keyframes fadein {
+      from { bottom: 0; opacity: 0; }
+      to { bottom: 30px; opacity: 1; }
+    }
+
+    @keyframes fadeout {
+      from { bottom: 30px; opacity: 1; }
+      to { bottom: 0; opacity: 0; }
+    }
 
 </style>
 </head>
 <body>
-    <script>
-        function toggleVisibility(id, btn) {
-  const input = document.getElementById(id);
-  const icon = btn.querySelector("span");
-
-  if (input.type === "password") {
-    input.type = "text";
-    icon.textContent = "visibility_off";
-  } else {
-    input.type = "password";
-    icon.textContent = "visibility";
-  }
-}
-function loginToSpeakUp(){
-        window.location.href = "login.html";
-    }
-function handleSubmit(e) {
-  e.preventDefault();
-  const snackbar = document.getElementById("snackbar");
-  snackbar.style.display = "block";
-  setTimeout(() => {
-    snackbar.style.display = "none";
-  }, 3000);
-}
-</script>
   <div class="signup-container">
-    <form class="signup-form" onsubmit="handleSubmit(event)">
+    <form class="signup-form" id="signup-form">
       <h2>Create Your Account</h2>
 
       <div class="input-group">
@@ -198,7 +219,7 @@ function handleSubmit(e) {
         <span class="error" id="confirmPasswordErr"></span>
       </div>
 
-      <button type="submit" class="submit-btn">Sign Up</button>
+      <button type="submit" class="submit-btn">Sign Up</button><br>
 
       <p class="login-text">
         Already have an account?
@@ -208,7 +229,70 @@ function handleSubmit(e) {
       <div id="snackbar" class="snackbar">Signup successful!</div>
     </form>
   </div>
+  <div id="toast" class="toast">Login successful!</div>
+  <script type="module">
+  import { handleSignup } from './backend/firebase_auth.js';
+document.addEventListener("DOMContentLoaded", function () {
+document.getElementById("signup-form").addEventListener("submit", async function handleSubmit(e) {
+  e.preventDefault();
 
-  <script src="script.js"></script>
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const confirm_password = document.getElementById("confirmPassword").value;
+
+
+  if (password !== confirm_password) {
+    toast.textContent = "Passwords do not match!";
+    toast.style.backgroundColor = "#e53935";
+    toast.classList.add("show");
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 4000);
+    return; 
+  }
+
+  try {
+    const { user, error } = await handleSignup(email, password);
+    console.log("Sign-in result:", user, error);
+
+    if (user) {
+      toast.textContent = "Sign-Up successful!";
+      toast.style.backgroundColor = "#4caf50";
+      window.location.href = "login.html";
+    } else {
+      toast.textContent = "Account Already Exists";
+      toast.style.backgroundColor = "#e53935";
+    }
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    toast.textContent = "Sign-Up Failed";
+    toast.style.backgroundColor = "#e53935";
+  }
+
+  toast.classList.add("show");
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 4000);
+});
+});
+
+</script>
+<script>
+  function toggleVisibility(id, btn) {
+    const input = document.getElementById(id);
+    const icon = btn.querySelector("span");
+
+    if (input.type === "password") {
+      input.type = "text";
+      icon.textContent = "visibility_off";
+    } else {
+      input.type = "password";
+      icon.textContent = "visibility";
+    }
+  }
+  function loginToSpeakUp(){
+        window.location.href = "login.html";
+}
+</script>
 </body>
 </html>

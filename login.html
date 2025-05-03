@@ -121,6 +121,31 @@
     .submit-btn:hover {
       background-color: var(--primary-hover);
     }
+    
+    .google-btn {
+      width: 100%;
+      padding: 14px;
+      background-color: green;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 12px;
+    }
+
+    .google-btn:hover {
+      background-color: darkgreen;
+    }
+
+    .signup-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #444;
+    }
 
     .signup-text {
       text-align: center;
@@ -166,6 +191,43 @@
       to { bottom: 0; opacity: 0; }
     }
   </style>
+  <script type="module">
+    import { signInWithGoogle } from './backend/firebase_auth.js';
+    const redirectParam = new URLSearchParams(window.location.search).get("redirect");
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const signInBtn = document.getElementById("sign-in-btn");
+      const toast = document.getElementById("toast");
+
+      signInBtn.onclick = async () => {
+  try {
+    const { user, error } = await signInWithGoogle();
+    console.log("Sign in result:", user, error); 
+
+    if (user) {
+      toast.textContent = "Login successful!";
+      toast.style.backgroundColor = "#4caf50";
+      localStorage.setItem("isLoggedIn", "true");
+      	if (redirectParam === "fromProfile") {
+  	window.location.href = "index.html?from=profile";
+	} else {	
+  	window.location.href = "index.html";
+	}
+    } else {
+      toast.textContent = error || "Google Sign-in failed!";
+      toast.style.backgroundColor = "#e53935";
+    }
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    toast.textContent = "An unexpected error occurred.";
+    toast.style.backgroundColor = "#e53935";
+  }
+
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 4000);
+};
+    });
+  </script>
 </head>
 <body>
   <div class="container">
@@ -175,7 +237,6 @@
         <div class="input-group">
           <label for="email">Email</label>
           <div class="input-wrapper">
-            <span>📧</span>
             <input type="email" id="email" placeholder="Enter your email" />
           </div>
           <div class="error" id="emailErr"></div>
@@ -184,14 +245,14 @@
         <div class="input-group">
           <label for="password">Password</label>
           <div class="input-wrapper">
-            <span>🔒</span>
             <input type="password" id="password" placeholder="Enter password" />
-            <button type="button" id="togglePassword">👁️</button>
+            <button type="button" id="togglePassword" style="font-size: 15px;color: grey;">Show</button>
           </div>
           <div class="error" id="passwordErr"></div>
         </div>
-
+	
         <button type="submit" class="submit-btn">Login</button>
+        <button type="button" class="google-btn" id="sign-in-btn">Continue with Google</button><br><br>
 
         <p class="signup-text">
           Don't have an account? <a href="signup.html" onclick="signupToSpeakup()">Signup Here</a>
@@ -202,7 +263,11 @@
 
   <div id="toast" class="toast">Login successful!</div>
 
-  <script>
+  <script type="module">
+  import { handleLogin } from './backend/firebase_auth.js';
+  const redirectParam1 = new URLSearchParams(window.location.search).get("redirect");
+  
+
     const loginForm = document.getElementById("loginForm");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
@@ -216,7 +281,7 @@
     togglePassword.addEventListener("click", () => {
       showPassword = !showPassword;
       passwordInput.type = showPassword ? "text" : "password";
-      togglePassword.textContent = showPassword ? "🙈" : "👁️";
+      togglePassword.textContent = showPassword ? "Hide" : "Show";
     });
 
     function validateForm() {
@@ -239,23 +304,43 @@
       if (!password) {
         passwordErr.textContent = "Password is required";
         isValid = false;
-      } else if (password.length < 6) {
-        passwordErr.textContent = "Minimum 6 characters";
-        isValid = false;
-      } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password)) {
-        passwordErr.textContent =
-          "Password must contain uppercase, lowercase, number, and special character";
-        isValid = false;
-      } else {
+      }else {
         passwordErr.textContent = "";
       }
 
       return isValid;
     }
 
-    loginForm.addEventListener("submit", function (e) {
+    loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (validateForm()) {
+      
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      
+      	try {
+    const {user,error} = await handleLogin(email, password);
+    console.log("Login in result:", user,error); 
+
+    if (user) {
+      toast.textContent = "Login successful!";
+      toast.style.backgroundColor = "#4caf50";
+      localStorage.setItem("isLoggedIn", "true");
+      if (redirectParam1 === "fromProfile") {
+  	window.location.href = "index.html?from=profile";
+	} else {
+  	window.location.href = "index.html";
+	}
+    } else {
+      toast.textContent ="Log-in failed!";
+      toast.style.backgroundColor = "#e53935";
+    }
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    toast.textContent = "Incorrect Password or Account doesnt exist";
+    toast.style.backgroundColor = "#e53935";
+  }
         toast.classList.add("show");
         setTimeout(() => {
           toast.classList.remove("show");

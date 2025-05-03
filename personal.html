@@ -154,13 +154,43 @@
     li {
       margin-bottom: 0.5rem;
     }
+    #loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Circular spinner */
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #e5e7eb; /* light gray */
+  border-top: 6px solid #3b82f6; /* blue */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
   </style>
 </head>
 <body>
   <div class="container">
     <!-- Left panel with image and navigation -->
     <div class="left-panel">
-      <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-img" />
+      <div id="content2" style="display:none;">
+      <img src="logo.png" alt="Profile Picture" class="profile-img" />
       <h2>John Doe</h2>
       <p class="role">Citizen Reporter</p>
       <div class="nav">
@@ -168,42 +198,33 @@
         <button class="tab-btn" data-tab="reports">Reports</button>
       </div>
     </div>
+  </div>
+    
+    <div id="loader">
+  <div class="spinner"></div>
+</div>
 
     <!-- Right panel with tabbed content -->
     <div class="right-panel">
       <!-- About Me Tab -->
+     <div id="content" style="display: none;">
       <div class="tab-content" id="about">
-        <h2>About Me</h2>
+        <h2>Citizen Details</h2>
         <div class="user-details">
-          <table>
-            <tr><td><strong>Name:</strong></td><td>John Doe</td></tr>
-            <tr><td><strong>Email:</strong></td><td>john.doe@example.com</td></tr>
-            <tr><td><strong>Phone:</strong></td><td>+91 9876543210</td></tr>
-            <tr><td><strong>Area:</strong></td><td>Srinagar</td></tr>
-            <tr><td><strong>Mandal:</strong></td><td>Hyderabad</td></tr>
-            <tr><td><strong>Gender:</strong></td><td>Male</td></tr>
+          <table> 
           </table>
         </div>
-
-        <!-- Progress Bar -->
-        <div class="progress-container">
-          <h3 style="margin-bottom: 0.5rem;">Profile Completion</h3>
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill">70%</div>
-          </div>
-        </div>
       </div>
-
-      <!-- Reports Tab -->
-      <div class="tab-content" id="reports" style="display: none;">
-        <h2>Reports</h2>
-        <p>Here are some Reports you generated:</p>
-        <ul>
-          <li>Water supply issue - Jan 12</li>
-          <li>Road maintenance issue - Feb 25</li>
-          <li>Electricity outage - Mar 10</li>
-        </ul>
-      </div>
+    </div>
+    <!-- Reports Tab -->
+    <div class="tab-content" id="reports" style="display: none;">
+      <h2>Reports</h2><br>
+      <p>Here are some Reports you generated:</p>
+      <ul>
+        <li>Water supply issue - Jan 12</li>
+        <li>Road maintenance issue - Feb 25</li>
+        <li>Electricity outage - Mar 10</li>
+      </ul>
     </div>
   </div>
 
@@ -222,5 +243,105 @@
       });
     });
   </script>
+  <script type="module">
+  // Import the functions you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, getDoc,collection,getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  // Your Firebase configuration
+  const firebaseConfig = {
+  apiKey: "AIzaSyBAQdZ46Zab_zTZTkeTG97HpPzmIDqDuHE",
+  authDomain: "speakupportal.firebaseapp.com",
+  projectId: "speakupportal",
+  storageBucket: "speakupportal.firebasestorage.app",
+  messagingSenderId: "1017841133120",
+  appId: "1:1017841133120:web:47380e98faad1c1e3021a5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  // Fetch user data on login
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const uid = user.uid;
+      const docRef = doc(db, "users", uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.querySelector("h2").textContent = data.name || "No Name";
+        document.querySelector(".role").textContent = "Citizen Reporter";
+        const tableRows = `
+          <tr><td><strong>Name:</strong></td><td>${data.name || ''}</td></tr>
+          <tr><td><strong>Email:</strong></td><td>${data.email || ''}</td></tr>
+          <tr><td><strong>Phone:</strong></td><td>${data.phone || ''}</td></tr>
+          <tr><td><strong>Area:</strong></td><td>${data.area || ''}</td></tr>
+          <tr><td><strong>Mandal:</strong></td><td>${data.mandal || ''}</td></tr>
+          <tr><td><strong>Gender:</strong></td><td>${data.gender || ''}</td></tr>
+          <tr><td><strong>Education:</strong></td><td>${data.education || ""}</td></tr>
+          <tr><td><strong>District:</strong></td><td>${data.district || ""}</td></tr>
+          <tr><td><strong>State:</strong></td><td>${data.state || ""}</td></tr>
+          <tr><td><strong>Bio:</strong></td><td>${data.bio || "—"}</td></tr>
+        `;
+        document.querySelector(".user-details table").innerHTML = tableRows;
+      } else {
+        alert("Profile not found!");
+        window.location.href = "index.html";
+      }
+
+      const reportList = document.querySelector("#reports ul");
+reportList.innerHTML = ""; // Clear default <li> items
+
+const reportsRef = collection(db, "reports", uid, "userReports");
+
+try {
+  const snapshot = await getDocs(reportsRef);
+  
+  if (snapshot.empty) {
+    reportList.style.textAlign = "center";
+    reportList.style.marginTop = "2rem";
+    reportList.innerHTML = `
+    <p style="font-size: 1.1rem;">
+      No reports found.<br><br>
+      <a href="report.html" style="color: #3b82f6; text-decoration: underline; font-weight: bold;">
+        Report a Problem
+      </a>
+    </p>
+  `;
+  } else {
+    snapshot.forEach((doc) => {
+      const report = doc.data();
+      const issue = report.incidentType || "No title";
+      const date = report.incidentDate || "No date";
+      const area = report.area || "Unknown area";
+
+      const li = document.createElement("li");
+      li.innerHTML = `
+  <div style="margin-bottom: 1rem;">
+    <div><strong>${issue}</strong> - ${date} (${area})</div>
+    <div style="background-color: #e5e7eb; border-radius: 8px; height: 12px; margin-top: 6px; width: 100%; max-width: 300px;">
+      <div style="height: 100%; width: 25%; background-color: #3b82f6; border-radius: 8px;"></div>
+    </div>
+  </div>
+`;
+      reportList.appendChild(li);
+    });
+  }
+} catch (error) {
+  console.error("Error loading reports:", error);
+  reportList.innerHTML = "<li>Error loading reports. Try again later.</li>";
+}
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("content").style.display = "block";
+      document.getElementById("content2").style.display = "contents";
+    } else {
+      window.location.href = "login.html";
+    }
+  });
+</script>
+
 </body>
 </html>
