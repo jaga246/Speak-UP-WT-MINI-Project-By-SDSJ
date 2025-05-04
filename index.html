@@ -70,11 +70,11 @@
 @keyframes switchColorDown {
   0%, 100% {
     color: black;
-    -webkit-text-stroke: 2px #007BFF;
+    -webkit-text-stroke: 1.5px #007BFF;
   }
   50% {
     color: white;
-    -webkit-text-stroke: 2px #007BFF;
+    -webkit-text-stroke: 1.5px #007BFF;
   }
 }
 
@@ -87,11 +87,11 @@
 }
 
 .color-switch-up {
-  animation: switchColorUp 2.5s infinite;
+  animation: switchColorUp 3.5s infinite;
 }
 
 .color-switch-down {
-  animation: switchColorDown 2.5s infinite;
+  animation: switchColorDown 3.5s infinite;
 }
 .custom-button {
   display: inline-block;
@@ -412,10 +412,17 @@
   </div>
 </div>
 
+<div id="feedbackModal" class="modal-overlay">
+  <div class="modal-box">
+    <p>Thank You for Sharing Feedback</p>
+    <button onclick="closeModalFeed()">OK</button>
+  </div>
+</div>
+
 <div id="logoutModal" class="modal-overlay">
   <div class="modal-box">
     <p>Logged Out Succesfully</p>
-    <button onclick="closeModal()">OK</button>
+    <button onclick="closeModallogout()">OK</button>
   </div>
 </div>
   <!-- Footer -->
@@ -555,6 +562,7 @@ if (parseInt(star.getAttribute('data-value')) <= rating) {
   async function logout(){
    signOut(auth);
    localStorage.setItem("isLoggedIn", "false");
+   localStorage.setItem("isdataSave", "false");
    showlogoutModal()
 }
 window.logout = logout;
@@ -630,6 +638,7 @@ onAuthStateChanged(auth, async (user) => {
 
       try {
         await setDoc(doc(db, "feedbacks", uid), data);
+        showFeedbackModal();
         form.reset();
       } catch (error) {
         console.error("Error sending feedback:", error);
@@ -692,11 +701,22 @@ window.checkUserProfile = checkUserProfile
   function showlogoutModal() {
     document.getElementById("logoutModal").style.display = "flex";
   }
+  function showFeedbackModal() {
+    document.getElementById("feedbackModal").style.display = "flex";
+  }
 </script>
 <script>
   function closeModal() {
     document.getElementById("loginModal").style.display = "none";
     window.location.href = "login.html";
+  }
+  function closeModallogout() {
+    document.getElementById("logoutModal").style.display = "none";
+    window.location.href = "index.html";
+  }
+  function closeModalFeed() {
+    document.getElementById("feedbackModal").style.display = "none";
+    window.location.href = "index.html";
   }
 </script>
 <script>

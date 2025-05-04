@@ -211,7 +211,7 @@
       	if (redirectParam === "fromProfile") {
   	window.location.href = "index.html?from=profile";
 	} else {	
-  	window.history.back();
+  	window.location.href = "index.html";
 	}
     } else {
       toast.textContent = error || "Google Sign-in failed!";
@@ -330,10 +330,10 @@
       if (redirectParam1 === "fromProfile") {
   	window.location.href = "index.html?from=profile";
 	} else {
-  	window.history.back();
+  	window.location.href = "index.html";
 	}
     } else {
-      toast.textContent ="Log-in failed!";
+      toast.textContent = "Incorrect Password or Account doesnt exist";
       toast.style.backgroundColor = "#e53935";
     }
   } catch (err) {
